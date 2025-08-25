@@ -1,0 +1,48 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build", "generate"],
+      "outputs": ["dist/**"],
+      "outputLogs": "new-only"
+    },
+    "generate": {
+      "dependsOn": ["^build"],
+      "inputs": [
+        "proto",
+        "buf.gen.yaml",
+        "buf.yaml",
+        "buf.lock",
+        "package.json"
+      ],
+      "outputs": ["src/gen/**"],
+      "outputLogs": "new-only"
+    },
+    "test": {
+      "dependsOn": ["^build", "generate"],
+      "cache": false
+    },
+    "format": {
+      "outputLogs": "new-only"
+    },
+    "license-header": {
+      "outputLogs": "new-only"
+    },
+    "lint": {
+      "dependsOn": ["format", "^build", "generate"],
+      "cache": false
+    },
+    "attw": {
+      "dependsOn": ["build"],
+      "outputLogs": "new-only"
+    },
+    "//#format": {
+      "inputs": ["$TURBO_DEFAULT$", "!packages/**", "package-lock.json"],
+      "outputLogs": "new-only"
+    },
+    "//#lint": {
+      "dependsOn": ["format"],
+      "cache": false
+    }
+  }
+}

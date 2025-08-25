@@ -1,0 +1,16 @@
+# buf.gen.yaml
+version: v2
+inputs:
+  - directory: proto
+# Deletes the directories specified in the `out` field for all plugins before running code generation.
+clean: true
+plugins:
+  # The local plugin is installed with `npm install @bufbuild/protoc-gen-es`.
+  - local: protoc-gen-es
+    opt:
+      - target=ts
+      # This option enables Valid types
+      - valid_types=protovalidate_required+legacy_required
+    out: src/gen
+    # Also generate any imported dependencies
+    include_imports: true
