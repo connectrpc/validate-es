@@ -43,11 +43,11 @@
   "peerDependencies": {
     "@bufbuild/protobuf": "^2.6.3",
     "@bufbuild/protovalidate": "^0.8.0",
-    "@connectrpc/connect": "^2.0.3"
+    "@connectrpc/connect": "^2.1.0"
   },
   "devDependencies": {
     "@bufbuild/protobuf": "^2.6.3",
     "@bufbuild/protovalidate": "^0.8.0",
-    "@connectrpc/connect": "^2.0.3"
+    "@connectrpc/connect": "^2.1.0"
   }
 }
