@@ -41,12 +41,12 @@
     }
   },
   "peerDependencies": {
-    "@bufbuild/protobuf": "^2.6.3",
+    "@bufbuild/protobuf": "^2.7.0",
     "@bufbuild/protovalidate": "^0.8.0",
     "@connectrpc/connect": "^2.0.3"
   },
   "devDependencies": {
-    "@bufbuild/protobuf": "^2.6.3",
+    "@bufbuild/protobuf": "^2.7.0",
     "@bufbuild/protovalidate": "^0.8.0",
     "@connectrpc/connect": "^2.0.3"
   }
