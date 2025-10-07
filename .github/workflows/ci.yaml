@@ -65,3 +65,4 @@ jobs:
           restore-keys: ${{ runner.os }}/test
       - run: npm ci
       - run: npx turbo run test
+      - run: node scripts/gh-diffcheck.js
