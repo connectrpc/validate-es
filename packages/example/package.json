@@ -21,7 +21,7 @@
     "@connectrpc/validate": "0.1.0"
   },
   "devDependencies": {
-    "@bufbuild/buf": "^1.56.0",
+    "@bufbuild/buf": "^1.57.2",
     "@bufbuild/protoc-gen-es": "^2.7.0",
     "@standard-schema/spec": "^1.0.0"
   }
