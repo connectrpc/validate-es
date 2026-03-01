@@ -24,7 +24,7 @@
     "@bufbuild/buf": "^1.57.2",
     "@bufbuild/license-header": "^0.0.4",
     "@bufbuild/protoc-gen-es": "^2.7.0",
-    "@types/node": "^24.6.1",
+    "@types/node": "^25.3.3",
     "tsx": "^4.20.6",
     "turbo": "^2.5.8",
     "typescript": "^5.9.3"
