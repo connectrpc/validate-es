@@ -80,3 +80,96 @@ void suite("createValidateInterceptor()", () => {
     );
   });
 });
+
+void suite("createValidateInterceptor({ validateResponses: true })", () => {
+  // Client with response validation enabled and handlers that return invalid responses.
+  const invalidResponseClient = createClient(
+    TestService,
+    createRouterTransport(
+      ({ service }: ConnectRouter) => {
+        service(TestService, {
+          // Returns a user with an invalid email, violating the constraint.
+          createUser: () => ({ user: { email: "not an email" } }),
+          cumSum: async (req) => {
+            for await (const _ of req) {
+            }
+            // Returns default sum of 0, violating the gt constraint.
+            return {};
+          },
+        });
+      },
+      {
+        router: {
+          interceptors: [
+            createValidateInterceptor({ validateResponses: true }),
+          ],
+        },
+      },
+    ),
+  );
+  // Client with response validation enabled and handlers that return valid responses.
+  const validResponseClient = createClient(
+    TestService,
+    createRouterTransport(
+      ({ service }: ConnectRouter) => {
+        service(TestService, {
+          createUser: () => ({ user: { email: "abc@example.com" } }),
+          cumSum: async (req) => {
+            for await (const _ of req) {
+            }
+            return { sum: 1n };
+          },
+        });
+      },
+      {
+        router: {
+          interceptors: [
+            createValidateInterceptor({ validateResponses: true }),
+          ],
+        },
+      },
+    ),
+  );
+  void test("rejects invalid unary response", async () => {
+    await assert.rejects(
+      () =>
+        invalidResponseClient.createUser({
+          user: { email: "abc@example.com" },
+        }),
+      (err) => {
+        const cErr = ConnectError.from(err);
+        // Response validation failures use Code.Internal.
+        assert.equal(cErr.code, Code.Internal);
+        assert.equal(cErr.details.length > 0, true);
+        return true;
+      },
+    );
+  });
+  void test("allows valid unary response", async () => {
+    await assert.doesNotReject(() =>
+      validResponseClient.createUser({ user: { email: "abc@example.com" } }),
+    );
+  });
+  void test("rejects invalid streaming response", async () => {
+    await assert.rejects(
+      () =>
+        invalidResponseClient.cumSum(
+          createAsyncIterable([create(CumSumRequestSchema, { number: 1n })]),
+        ),
+      (err) => {
+        const cErr = ConnectError.from(err);
+        // Response validation failures use Code.Internal.
+        assert.equal(cErr.code, Code.Internal);
+        assert.equal(cErr.details.length > 0, true);
+        return true;
+      },
+    );
+  });
+  void test("allows valid streaming response", async () => {
+    await assert.doesNotReject(() =>
+      validResponseClient.cumSum(
+        createAsyncIterable([create(CumSumRequestSchema, { number: 1n })]),
+      ),
+    );
+  });
+});

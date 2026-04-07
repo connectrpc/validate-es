@@ -49,5 +49,6 @@ message CumSumRequest {
 }
 
 message CumSumResponse {
-  int64 sum = 1;
+  // Sum must be positive to enable response validation testing.
+  int64 sum = 1 [(buf.validate.field).int64.gt = 0];
 }

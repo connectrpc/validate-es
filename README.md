@@ -130,7 +130,13 @@ configuration files, and the npm script `generate`.
 
 ### Does the interceptor validate responses?
 
-No. On both clients and servers, the interceptor only validates requests.
+By default, on both clients and servers, the interceptor only validates requests. If you'd additionally like to validate responses, use the `validateResponses` option when constructing your interceptor.
+
+```typescript
+createValidateInterceptor({ validateResponses: true })
+```
+
+Response validation failures use `Code.Internal` rather than `Code.InvalidArgument`.
 
 ## Ecosystem
 
