@@ -27,7 +27,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file test.proto.
  */
 export const file_test: GenFile = /*@__PURE__*/
-  fileDesc("Cgp0ZXN0LnByb3RvIukBCgRVc2VyEhYKBWVtYWlsGAEgASgJQge6SARyAmABEi4KCmJpcnRoX2RhdGUYAiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEi8KC3NpZ251cF9kYXRlGAMgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcDpoukhlGmMKEHVzZXIuc2lnbnVwX2RhdGUSKnNpZ251cCBkYXRlIG11c3QgYmUgb24gb3IgYWZ0ZXIgYmlydGggZGF0ZRojdGhpcy5zaWdudXBfZGF0ZSA+PSB0aGlzLmJpcnRoX2RhdGUiKAoRQ3JlYXRlVXNlclJlcXVlc3QSEwoEdXNlchgBIAEoCzIFLlVzZXIiKQoSQ3JlYXRlVXNlclJlc3BvbnNlEhMKBHVzZXIYASABKAsyBS5Vc2VyIigKDUN1bVN1bVJlcXVlc3QSFwoGbnVtYmVyGAEgASgDQge6SAQiAiAAIh0KDkN1bVN1bVJlc3BvbnNlEgsKA3N1bRgBIAEoAzJxCgtUZXN0U2VydmljZRI1CgpDcmVhdGVVc2VyEhIuQ3JlYXRlVXNlclJlcXVlc3QaEy5DcmVhdGVVc2VyUmVzcG9uc2USKwoGQ3VtU3VtEg4uQ3VtU3VtUmVxdWVzdBoPLkN1bVN1bVJlc3BvbnNlKAFiBnByb3RvMw", [file_buf_validate_validate, file_google_protobuf_timestamp]);
+  fileDesc("Cgp0ZXN0LnByb3RvIukBCgRVc2VyEhYKBWVtYWlsGAEgASgJQge6SARyAmABEi4KCmJpcnRoX2RhdGUYAiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEi8KC3NpZ251cF9kYXRlGAMgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcDpoukhlGmMKEHVzZXIuc2lnbnVwX2RhdGUSKnNpZ251cCBkYXRlIG11c3QgYmUgb24gb3IgYWZ0ZXIgYmlydGggZGF0ZRojdGhpcy5zaWdudXBfZGF0ZSA+PSB0aGlzLmJpcnRoX2RhdGUiKAoRQ3JlYXRlVXNlclJlcXVlc3QSEwoEdXNlchgBIAEoCzIFLlVzZXIiKQoSQ3JlYXRlVXNlclJlc3BvbnNlEhMKBHVzZXIYASABKAsyBS5Vc2VyIigKDUN1bVN1bVJlcXVlc3QSFwoGbnVtYmVyGAEgASgDQge6SAQiAiAAIiYKDkN1bVN1bVJlc3BvbnNlEhQKA3N1bRgBIAEoA0IHukgEIgIgADJxCgtUZXN0U2VydmljZRI1CgpDcmVhdGVVc2VyEhIuQ3JlYXRlVXNlclJlcXVlc3QaEy5DcmVhdGVVc2VyUmVzcG9uc2USKwoGQ3VtU3VtEg4uQ3VtU3VtUmVxdWVzdBoPLkN1bVN1bVJlc3BvbnNlKAFiBnByb3RvMw", [file_buf_validate_validate, file_google_protobuf_timestamp]);
 
 /**
  * @generated from message User
@@ -112,6 +112,8 @@ export const CumSumRequestSchema: GenMessage<CumSumRequest> = /*@__PURE__*/
  */
 export type CumSumResponse = Message<"CumSumResponse"> & {
   /**
+   * Sum must be positive to enable response validation testing.
+   *
    * @generated from field: int64 sum = 1;
    */
   sum: bigint;

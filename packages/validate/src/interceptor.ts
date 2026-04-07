@@ -30,11 +30,19 @@ interface ValidateInterceptorOptions {
    * If not provided, it will create a validator.
    */
   validator?: Validator;
+  /**
+   * Whether to also validate response messages.
+   *
+   * By default, only request messages are validated. When this is set to true,
+   * unary response messages and each message in a response stream are also
+   * validated. Response validation failures use Code.Internal.
+   */
+  validateResponses?: boolean;
 }
 
 /**
  * Creates an Interceptor that ensures that RPC request messages match the constraints
- * expressed in their Protobuf schemas. It does not validate response messages.
+ * expressed in their Protobuf schemas.
  *
  * By default, the Interceptor uses a validator that is created using `createValidator`
  * without any options. To use a different validator use the `validator` option.
@@ -42,6 +50,10 @@ interface ValidateInterceptorOptions {
  * RPCs with invalid request messages short-circuit with an error.
  * The error always uses Code.InvalidArgument and has a detailed representation
  * of the error attached as a error detail.
+ *
+ * By default, only request messages are validated. To also validate response
+ * messages, set the `validateResponses` option to true. Response validation
+ * failures use Code.Internal.
  *
  * This interceptor is primarily intended for use on handlers.
  * Client-side use is possible, but discouraged unless the client
@@ -51,13 +63,27 @@ export function createValidateInterceptor(
   opt?: ValidateInterceptorOptions,
 ): Interceptor {
   const validator = opt?.validator ?? createValidator();
+  // Whether to validate response messages in addition to requests.
+  const validateResponses = opt?.validateResponses ?? false;
   return (next) => {
-    return (req) => {
+    return async (req) => {
       if (req.stream === false) {
-        validate(validator, req.method.input, req.message);
-        return next(req);
+        // Validate the unary request message.
+        validate(
+          validator,
+          req.method.input,
+          req.message,
+          Code.InvalidArgument,
+        );
+        const res = await next(req);
+        // Validate the unary response message if configured.
+        if (validateResponses && res.stream === false) {
+          validate(validator, req.method.output, res.message, Code.Internal);
+        }
+        return res;
       }
-      return next({
+      // Wrap the request stream to validate each message as it arrives.
+      const res = await next({
         ...req,
         message: {
           [Symbol.asyncIterator]: () => {
@@ -66,7 +92,12 @@ export function createValidateInterceptor(
               async next(...[value]: [] | [unknown]) {
                 const next = await it.next(value);
                 if (next.value) {
-                  validate(validator, req.method.input, next.value);
+                  validate(
+                    validator,
+                    req.method.input,
+                    next.value,
+                    Code.InvalidArgument,
+                  );
                 }
                 return next;
               },
@@ -83,11 +114,51 @@ export function createValidateInterceptor(
           },
         },
       });
+      // Wrap the response stream to validate each message if configured.
+      if (validateResponses && res.stream === true) {
+        return {
+          ...res,
+          message: {
+            [Symbol.asyncIterator]: () => {
+              const it = res.message[Symbol.asyncIterator]();
+              const validateIt: AsyncIterator<Message> = {
+                async next(...[value]: [] | [unknown]) {
+                  const next = await it.next(value);
+                  if (next.value) {
+                    validate(
+                      validator,
+                      req.method.output,
+                      next.value,
+                      Code.Internal,
+                    );
+                  }
+                  return next;
+                },
+              };
+              if (it.return) {
+                validateIt.return = (value?: unknown) =>
+                  (it as Required<typeof it>).return(value);
+              }
+              if (it.throw) {
+                validateIt.throw = (value?: unknown) =>
+                  (it as Required<typeof it>).throw(value);
+              }
+              return validateIt;
+            },
+          },
+        };
+      }
+      return res;
     };
   };
 }
 
-function validate(validator: Validator, desc: DescMessage, msg: Message) {
+function validate(
+  validator: Validator,
+  desc: DescMessage,
+  msg: Message,
+  code: Code,
+) {
   const result = validator.validate(desc, msg);
   if (result.kind === "valid") {
     return;
@@ -99,7 +170,7 @@ function validate(validator: Validator, desc: DescMessage, msg: Message) {
   }
   throw new ConnectError(
     result.error.message,
-    Code.InvalidArgument,
+    code,
     undefined,
     details,
     result.error,
