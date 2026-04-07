@@ -45,7 +45,7 @@ void suite("createValidateInterceptor()", () => {
       },
     ),
   );
-  void test("rejects invalid unary rpcs", async () => {
+  void test("rejects invalid unary request", async () => {
     await assert.rejects(
       () => client.createUser({ user: { email: "not an email" } }),
       (err) => {
@@ -56,12 +56,12 @@ void suite("createValidateInterceptor()", () => {
       },
     );
   });
-  void test("allows valid unary rpcs", async () => {
+  void test("allows valid unary request", async () => {
     await assert.doesNotReject(() =>
       client.createUser({ user: { email: "abc@example.com" } }),
     );
   });
-  void test("rejects invalid streaming rpcs", async () => {
+  void test("rejects invalid streaming request", async () => {
     await assert.rejects(
       () => client.cumSum(createAsyncIterable([{}])),
       (err) => {
@@ -72,7 +72,7 @@ void suite("createValidateInterceptor()", () => {
       },
     );
   });
-  void test("allows valid streaming rpcs", async () => {
+  void test("allows valid streaming request", async () => {
     await assert.doesNotReject(() =>
       client.cumSum(
         createAsyncIterable([create(CumSumRequestSchema, { number: 1n })]),
