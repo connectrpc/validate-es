@@ -1,6 +1,6 @@
 {
   "name": "validate-example",
-  "version": "0.100.0",
+  "version": "0.2.0",
   "private": true,
   "license": "Apache-2.0",
   "scripts": {
@@ -18,7 +18,7 @@
     "@bufbuild/protovalidate": "^1.0.0",
     "@connectrpc/connect": "^2.0.3",
     "@connectrpc/connect-node": "^2.0.3",
-    "@connectrpc/validate": "0.100.0"
+    "@connectrpc/validate": "0.2.0"
   },
   "devDependencies": {
     "@bufbuild/buf": "^1.57.2",
