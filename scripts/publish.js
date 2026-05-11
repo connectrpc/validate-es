@@ -1,4 +1,4 @@
-// Copyright 2024-2026 Buf Technologies, Inc.
+// Copyright 2021-2026 The Connect Authors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -29,7 +29,6 @@ const packages = discoverPackages();
 validatePackages(packages);
 
 const version = packages[0].version;
-gitCheckReleaseTag(version);
 npmPublish(version);
 
 /**
@@ -37,7 +36,7 @@ npmPublish(version);
  */
 function npmPublish(version) {
   const tag = determinePublishTag(version);
-  execSync(`npm publish --tag ${tag} --workspaces`, {
+  execSync(`npm publish --dry-run --tag ${tag} --workspaces`, {
     stdio: "inherit",
   });
 }
