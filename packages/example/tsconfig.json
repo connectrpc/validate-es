@@ -2,7 +2,11 @@
   "include": ["src/*.ts", "src/**/*.test.ts"],
   "compilerOptions": {
     "target": "es2020",
+    "types": ["node"],
+    "rootDir": "./src",
     "moduleResolution": "Node10",
+    // moduleResolution=node10 is deprecated in TypeScript 6.0.
+    "ignoreDeprecations": "6.0",
     "strict": true,
     "forceConsistentCasingInFileNames": true
   }
