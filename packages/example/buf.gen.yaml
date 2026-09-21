@@ -9,6 +9,8 @@ plugins:
   - local: protoc-gen-es
     opt:
       - target=ts
+      # Node16 module resolution requires explicit file extensions.
+      - import_extension=.js
       # This option enables Valid types
       - valid_types=protovalidate_required+legacy_required
     out: src/gen
