@@ -2,6 +2,8 @@
   "include": ["src/index.ts", "src/**/*.test.ts"],
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
+    "rootDir": "./src",
+    "types": ["node"],
     "lib": [
       // For Error.cause in error.ts and error.test.ts
       "DOM"
