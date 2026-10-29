@@ -4,7 +4,7 @@
 [![Build](https://github.com/connectrpc/validate-es/actions/workflows/ci.yaml/badge.svg?branch=main)](https://github.com/connectrpc/validate-es/actions/workflows/ci.yaml)
 [![NPM Version](https://img.shields.io/npm/v/@connectrpc/validate/latest?color=green&label=%40connectrpc%2Fvalidate)](https://www.npmjs.com/package/@connectrpc/validate)
 
-[@connectrpc/validate](https://www.npmjs.com/package/@connectrpc/validate) 
+[@connectrpc/validate](https://www.npmjs.com/package/@connectrpc/validate)
 provides a [Connect][connect-es] interceptor that
 takes the tedium out of data validation. Rather than hand-writing repetitive
 documentation and code &mdash; verifying that `User.email` is valid, or that
@@ -28,7 +28,7 @@ npm install @connectrpc/validate
 Curious what all this looks like in practice? First, let's define a schema for
 our user service:
 
-```protobuf
+```proto
 syntax = "proto3";
 
 package example.user.v1;
@@ -78,7 +78,7 @@ one import:
 import { createServer } from "node:http";
 import { connectNodeAdapter } from "@connectrpc/connect-node";
 import { createValidateInterceptor } from "@connectrpc/validate";
-import { UserService } from "./gen/example/v1/user_pb.js";
+import { UserService } from "./gen/example/user/v1/user_pb";
 
 const server = createServer(
   connectNodeAdapter({
@@ -133,7 +133,7 @@ configuration files, and the npm script `generate`.
 By default, on both clients and servers, the interceptor only validates requests. If you'd additionally like to validate responses, use the `validateResponses` option when constructing your interceptor.
 
 ```typescript
-createValidateInterceptor({ validateResponses: true })
+createValidateInterceptor({ validateResponses: true });
 ```
 
 Response validation failures use `Code.Internal` rather than `Code.InvalidArgument`.
@@ -154,13 +154,12 @@ This project follows semantic versioning. Once we tag
 a stable release, we will _not_ make breaking changes without incrementing the
 major version.
 
-
 ## License
 
 Offered under the [Apache 2 license](LICENSE).
 
 [bsr]: https://buf.build
-[cel-spec]: https://github.com/google/cel-spec
+[cel-spec]: https://github.com/cel-expr/cel-spec
 [connect-es]: https://github.com/connectrpc/connect-es
 [protovalidate-es]: https://github.com/bufbuild/protovalidate-es
 [protovalidate]: https://github.com/bufbuild/protovalidate

@@ -18,7 +18,7 @@ you to sign your commits when you open your pull request, and provide helpful ti
 
 [Fork][fork], then clone the repository:
 
-```
+```bash
 git clone git@github.com:your_github_username/validate-es.git
 cd validate-es
 git remote add upstream https://github.com/connectrpc/validate-es.git
@@ -39,23 +39,23 @@ npm run all
 ```
 
 We're using `turborepo` to run tasks. If you haven't used it yet, take a look at
-[filtering and package scoping](https://turbo.build/repo/docs/crafting-your-repository/running-tasks).
+[filtering and package scoping](https://turborepo.dev/docs/crafting-your-repository/running-tasks).
 
 ## Making Changes
 
 Start by creating a new branch for your changes:
 
-```
+```bash
 git checkout main
 git fetch upstream
 git rebase upstream/main
 git checkout -b cool_new_feature
 ```
 
-Make your changes, then ensure that `make` still passes.
+Make your changes, then ensure that `npm run all` still passes.
 When you're satisfied with your changes, push them to your fork.
 
-```
+```bash
 git commit -a
 git push origin cool_new_feature
 ```
@@ -76,4 +76,4 @@ We're much more likely to approve your changes if you:
 [fork]: https://github.com/connectrpc/validate-es/fork
 [open-issue]: https://github.com/connectrpc/validate-es/issues/new
 [dco]: https://developercertificate.org
-[commit-message]: http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html
+[commit-message]: https://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html
